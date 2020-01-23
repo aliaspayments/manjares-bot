@@ -1,5 +1,8 @@
 service: ManjaresBot
 
+plugins:
+  - serverless-python-requirements
+
 custom:
   myStage: ${opt:stage, self:provider.stage}
   myEnvironment:
