@@ -1,0 +1,40 @@
+service: ManjaresBot
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  myStage: ${opt:stage, self:provider.stage}
+  myEnvironment:
+    PYTHON_ENV: production
+    SLACK_API_TOKEN:
+      prod: <slack api token prod>
+      dev: <slack api token dev>
+    SLACK_CHANNEL:
+      prod: <slack channel prod>
+      dev: <slack channel dev>
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  environment:
+    MANJARES_URL: <url>
+    PYTHON_ENV: ${self:custom.myEnvironment.PYTHON_ENV}
+    SLACK_API_TOKEN: ${self:custom.myEnvironment.SLACK_API_TOKEN.${self:custom.myStage}}
+    SLACK_CHANNEL: ${self:custom.myEnvironment.SLACK_CHANNEL.${self:custom.myStage}}
+
+functions:
+  scrape:
+    handler: main.main
+    timeout: 20
+    memorySize: 128
+    events:
+      - schedule: cron(0 15 ? * MON-FRI *)
+
+package:
+  exclude:
+    - node_modules/**
+    - .env
+    - venv/**
+    - .vscode/**
