@@ -23,7 +23,7 @@ def get_website_data():
             html = fp.read()
             return html
 
-    headers = {"user-agent": "alias-payments-manjares-app/0.0.1"}
+    headers = {"user-agent": "manjares-app/0.0.1"}
 
     response = httpx.get(MANJARES_URL, headers=headers)
 
